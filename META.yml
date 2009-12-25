@@ -25,4 +25,4 @@ resources:
   homepage: http://github.com/yappo/p5-Module-Requires/tree
   license: http://dev.perl.org/licenses/
   repository: git://github.com/yappo/p5-Module-Requires.git
-version: 0.02
+version: 0.03
