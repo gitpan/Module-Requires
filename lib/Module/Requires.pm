@@ -1,16 +1,16 @@
 package Module::Requires;
 use strict;
 use warnings;
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use Carp;
 
 sub import {
     my($class, @args) = @_;
-    my $is_autoload = $args[0] eq '-autoload' ? shift @args : undef;
+    my $is_autoload = (@args && $args[0] eq '-autoload') ? shift @args : undef;
 
     my $caller = caller(0);
-    my $target = $is_autoload ? $caller : join '::', __PACKAGE__, $caller;
+    my $target = $is_autoload ? $caller : join '::', __PACKAGE__, '_load_tmp_', $caller;
 
     my @errors;
     my $i = 0;
@@ -44,8 +44,8 @@ sub import {
         }
 
         # load module
-        eval qq{package $target; use $name}; ## no critic.
-        if ($import) {
+        eval qq{package $target; require $name}; ## no critic.
+        if ($is_autoload) {
             push @imports, [ $name, $import ];
         }
         if (my $e = $@) {
@@ -108,7 +108,7 @@ sub import {
 
     # run import method
     for my $obj (@imports) {
-        $obj->[0]->import(@{ $obj->[1] });
+        eval qq{package $target;\$obj->[0]->import(\@{ \$obj->[1] || [] })}; ## no critic.
     }
 }
 

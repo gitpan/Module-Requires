@@ -38,6 +38,7 @@ t/lib/ClassE.pm
 t/lib/ClassF.pm
 t/lib/ClassG.pm
 t/lib/ClassH.pm
+t/lib/ClassI.pm
 xt/01_podspell.t
 xt/02_perlcritic.t
 xt/03_pod.t
